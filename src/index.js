@@ -43,18 +43,19 @@ const MainSlide = styled.li`
   position: relative;
   display: inline-block;
   box-sizing: border-box;
-  height: 0;
+  height: auto;
   margin: 0;
   list-style-type: none;
   z-index: ${props => props.active ? 1 : 0};
   
   img {
     width: 100%;
+    transition: all 0.2s;
     display: inline-block;
   }
   
   ${props => props.active && `
-    :hover {
+    img:hover {
       transform: scale(1.2);
       transition: all 1s;
       z-index: 1;
@@ -75,10 +76,6 @@ const MainSlide = styled.li`
 
 const Carousel = (props) => {
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const getMainSlide = () => {
-    return props.children[activeIndex];
-  }
 
   const getLeftSlide = () => {
     return activeIndex > 0 && activeIndex - 1;

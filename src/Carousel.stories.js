@@ -20,6 +20,13 @@ storiesOf("Carousel", module)
       })}
     </Carousel>
   ))
+  .add("with auto on", () => (
+    <Carousel autoSpeed="2000" auto>
+      {basicFixture.map(image => {
+        return (<img key={image.id} src={image.url} />)
+      })}
+    </Carousel>
+  ))
   .add("with divs", () => (
     <Carousel>
       {basicFixture.map(image => {

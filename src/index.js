@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
+
+import { useHover } from "./utils/hooks";
 
 const Wrapper = styled.div`
   max-width: 100%;
@@ -85,13 +88,18 @@ const Icon = styled.i`
 
 const Carousel = (props) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [hoverRef, isHovered] = useHover();
+
+  let autoInterval;
 
   useEffect(() => {
     function handleKeyDown(event) {
       if(event.keyCode === 37) {
+        clearInterval(autoInterval);
         goToPrev();
       }
       if(event.keyCode === 39) {
+        clearInterval(autoInterval);
         goToNext();
       }
     }
@@ -102,6 +110,23 @@ const Carousel = (props) => {
       document.removeEventListener("keydown", handleKeyDown)
     }
   }, [activeIndex])
+
+  useEffect(() => {
+    if(props.auto) {
+      autoInterval = setInterval(function() {
+        goToNext();
+      }, props.autoSpeed || 3000);
+    }
+    return function(){
+      clearInterval(autoInterval);
+    }
+  })
+
+  useEffect(() => {
+    if(isHovered) {
+      clearInterval(autoInterval);
+    }
+  })
 
   const getLeftSlide = () => {
     return activeIndex > 0 && activeIndex - 1;
@@ -128,7 +153,7 @@ const Carousel = (props) => {
   return (
     <Wrapper>
       <div>
-        <SlidesWrapper width={props.children.length * 100} translate={props.children.length > 1 ? getTranslateValue(): 0}>
+        <SlidesWrapper ref={hoverRef} width={props.children.length * 100} translate={props.children.length > 1 ? getTranslateValue(): 0}>
           {props.children.length > 1 ? props.children.map((child, index) => {
             return (
               <MainSlide
@@ -163,6 +188,13 @@ const Carousel = (props) => {
       }
     </Wrapper>
   )
+}
+
+Carousel.propTypes = {
+  showNavigation: PropTypes.bool,
+  showDots: PropTypes.bool,
+  auto: PropTypes.bool,
+  autoSpeed: PropTypes.number
 }
 
 export default Carousel;

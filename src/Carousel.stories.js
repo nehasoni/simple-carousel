@@ -8,10 +8,22 @@ storiesOf("Carousel", module)
     <Carousel>
     </Carousel>
   ))
+  .add("with one image", () => (
+    <Carousel>
+      <img key={basicFixture[0].id} src={basicFixture[0].url} />
+    </Carousel>
+  ))
   .add("with images", () => (
     <Carousel>
       {basicFixture.map(image => {
         return (<img key={image.id} src={image.url} />)
+      })}
+    </Carousel>
+  ))
+  .add("with divs", () => (
+    <Carousel>
+      {basicFixture.map(image => {
+        return (<div style={{ background: "pink", height: "400px", minWidth: "100%", width: "400px"}}>{image.id}</div>)
       })}
     </Carousel>
   ));

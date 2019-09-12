@@ -27,6 +27,20 @@ storiesOf("Carousel", module)
       })}
     </Carousel>
   ))
+  .add("with navigation off", () => (
+    <Carousel showNavigation={false} auto>
+      {basicFixture.map(image => {
+        return (<img key={image.id} src={image.url} />)
+      })}
+    </Carousel>
+  ))
+  .add("with dots off", () => (
+    <Carousel showDots={false} auto>
+      {basicFixture.map(image => {
+        return (<img key={image.id} src={image.url} />)
+      })}
+    </Carousel>
+  ))
   .add("with divs", () => (
     <Carousel>
       {basicFixture.map(image => {

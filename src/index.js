@@ -24,6 +24,19 @@ const SlidesWrapper = styled.ul`
   transition-timing-function: cubic-bezier(.645,.045,.355,1);
   will-change: transform;
 `;
+const DotsWrapper = styled.div`
+  text-align: center;
+  margin-top: 25px;
+`;
+const Dot = styled.span`
+  height: 20px;
+  width: 20px;
+  background-color: ${props => props.active ? "#c5c2c2" : "#e4e3e3"};
+  border-radius: 50%;
+  display: inline-block;
+  margin: 3px;
+  cursor: pointer;
+`;
 const Button = styled.div`
   z-index: 1;
   position: absolute;
@@ -144,6 +157,10 @@ const Carousel = (props) => {
     setActiveIndex(activeIndex > 0 ? activeIndex - 1 : props.children.length - 1)
   }
 
+  const goToIndex = index => {
+    setActiveIndex(index);
+  }
+
   const getTranslateValue = () => {
     return (11 * activeIndex) + 3 * (activeIndex - 1);
   }
@@ -175,8 +192,17 @@ const Carousel = (props) => {
             </MainSlide>
           }
         </SlidesWrapper>
+        {props.showDots &&
+          <DotsWrapper>
+            {props.children.length > 1 && props.children.map((child, index) => {
+              return (
+                <Dot active={activeIndex === index} onClick={() => goToIndex(index)}/>
+              )
+            })}
+          </DotsWrapper>
+        }
       </div>
-      {props.children.length > 1 &&
+      {props.children.length > 1 && props.showNavigation &&
         <React.Fragment>
           <PreviousButton onClick={goToPrev}>
             <Icon direction="left" />
@@ -188,6 +214,12 @@ const Carousel = (props) => {
       }
     </Wrapper>
   )
+}
+
+Carousel.defaultProps = {
+  showNavigation: true,
+  showDots: true,
+  auto: false
 }
 
 Carousel.propTypes = {
